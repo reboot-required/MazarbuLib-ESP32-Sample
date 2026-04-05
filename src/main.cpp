@@ -31,6 +31,15 @@ struct AppState {
 mazarbulib_t g_lib;
 AppState g_app_state;
 uint32_t g_last_tick_ms = 0;
+uint32_t g_last_uptime_sample_ms = 0;
+uint64_t g_accumulated_uptime_ms = 0;
+
+bool HasIntervalElapsed(uint32_t now, uint32_t last_tick_ms,
+                        uint32_t interval_ms) {
+  // Unsigned subtraction keeps elapsed-time checks correct across millis()
+  // wrap-around on ESP32.
+  return static_cast<uint32_t>(now - last_tick_ms) >= interval_ms;
+}
 
 void UartSend(const char* data, size_t len) {
   if (data == nullptr || len == 0U) {
@@ -85,7 +94,11 @@ void HaltWithError(const char* error_message) {
 }
 
 void UpdateTelemetry() {
-  g_app_state.uptime_s = millis() / 1000UL;
+  const uint32_t now = millis();
+  g_accumulated_uptime_ms +=
+      static_cast<uint32_t>(now - g_last_uptime_sample_ms);
+  g_last_uptime_sample_ms = now;
+  g_app_state.uptime_s = static_cast<uint32_t>(g_accumulated_uptime_ms / 1000U);
   g_app_state.free_heap = esp_get_free_heap_size();
   g_app_state.chip_temp_c = temperatureRead();
   g_app_state.gpio2 = digitalRead(kGpio2Pin) != LOW;
@@ -105,7 +118,7 @@ void ProcessSerialInput() {
 
 void TickScreenIfDue() {
   const uint32_t now = millis();
-  if (now - g_last_tick_ms < kScreenRefreshIntervalMs) {
+  if (!HasIntervalElapsed(now, g_last_tick_ms, kScreenRefreshIntervalMs)) {
     return;
   }
 
@@ -117,6 +130,7 @@ void TickScreenIfDue() {
 
 void setup() {
   Serial.begin(kSerialBaudRate);
+  g_last_uptime_sample_ms = millis();
 
   pinMode(kGpio2Pin, INPUT);
   pinMode(kGpio4Pin, INPUT);
