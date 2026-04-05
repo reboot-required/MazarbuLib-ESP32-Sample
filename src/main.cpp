@@ -95,8 +95,7 @@ void HaltWithError(const char* error_message) {
 
 void UpdateTelemetry() {
   const uint32_t now = millis();
-  g_accumulated_uptime_ms +=
-      static_cast<uint32_t>(now - g_last_uptime_sample_ms);
+  g_accumulated_uptime_ms += now - g_last_uptime_sample_ms;
   g_last_uptime_sample_ms = now;
   g_app_state.uptime_s = static_cast<uint32_t>(g_accumulated_uptime_ms / 1000U);
   g_app_state.free_heap = esp_get_free_heap_size();
@@ -108,11 +107,7 @@ void UpdateTelemetry() {
 
 void ProcessSerialInput() {
   while (Serial.available() > 0) {
-    const int next_char = Serial.read();
-    if (next_char < 0) {
-      break;
-    }
-    mazarbulib_feed_char(&g_lib, static_cast<char>(next_char));
+    mazarbulib_feed_char(&g_lib, static_cast<char>(Serial.read()));
   }
 }
 
