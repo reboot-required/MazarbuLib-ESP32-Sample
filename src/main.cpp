@@ -15,6 +15,7 @@ namespace {
 
 constexpr uint32_t kSerialBaudRate = 115200;
 constexpr uint32_t kScreenRefreshIntervalMs = 1000;
+constexpr uint32_t kErrorLoopDelayMs = 1000;
 constexpr uint8_t kGpio2Pin = 2;
 constexpr uint8_t kGpio4Pin = 4;
 constexpr uint8_t kGpio5Pin = 5;
@@ -34,11 +35,11 @@ uint32_t g_last_tick_ms = 0;
 uint32_t g_last_uptime_sample_ms = 0;
 uint64_t g_accumulated_uptime_ms = 0;
 
-bool HasIntervalElapsed(uint32_t now, uint32_t last_tick_ms,
+bool HasIntervalElapsed(uint32_t now, uint32_t last_time_ms,
                         uint32_t interval_ms) {
   // Unsigned subtraction keeps elapsed-time checks correct across millis()
   // wrap-around on ESP32.
-  return static_cast<uint32_t>(now - last_tick_ms) >= interval_ms;
+  return static_cast<uint32_t>(now - last_time_ms) >= interval_ms;
 }
 
 void UartSend(const char* data, size_t len) {
@@ -89,7 +90,7 @@ bool InitializeScreens() {
 void HaltWithError(const char* error_message) {
   Serial.println(error_message);
   while (true) {
-    delay(kScreenRefreshIntervalMs);
+    delay(kErrorLoopDelayMs);
   }
 }
 
