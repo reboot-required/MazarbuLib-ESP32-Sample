@@ -20,17 +20,13 @@ them by typing `n` (next) or `p` (previous) in the monitor.
 ## Prerequisites
 
 - [PlatformIO](https://platformio.org/) CLI or IDE extension
-- Git (to initialise the submodule)
 
 ## Getting Started
 
 ```bash
-# Clone with submodule
-git clone --recurse-submodules https://github.com/reboot-required/MazarbuLib-ESP32-Sample
+# Clone
+git clone https://github.com/reboot-required/MazarbuLib-ESP32-Sample
 cd MazarbuLib-ESP32-Sample
-
-# Or, if already cloned without --recurse-submodules:
-git submodule update --init
 
 # Build
 pio run
@@ -43,21 +39,13 @@ pio run --target upload && pio device monitor
 
 ```
 MazarbuLib-ESP32-Sample/
-├── lib/
-│   └── mazarbulib/          # MazarbuLib git submodule
-│       ├── include/
-│       │   ├── mazarbulib.h
-│       │   └── mazarbulib_config.h
-│       ├── src/
-│       │   └── mazarbulib.c
-│       └── library.json     # PlatformIO library manifest
 ├── src/
 │   └── main.cpp             # Application entry point
 └── platformio.ini
 ```
 
-PlatformIO auto-discovers `lib/mazarbulib/` via its `library.json`; no
-`lib_deps` entry is required in `platformio.ini`.
+`platformio.ini` pins MazarbuLib directly from GitHub, so the sample builds in
+environments without Git submodule or SSH setup.
 
 ## Serial Navigation
 
