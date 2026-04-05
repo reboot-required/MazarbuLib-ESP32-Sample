@@ -9,7 +9,7 @@
 #include <Arduino.h>
 #include <esp_system.h>
 
-#include "mazarbulib.h"
+#include "mazarbulib.h"  // NOLINT(build/include_subdir)
 
 namespace {
 
@@ -45,8 +45,8 @@ void TerminalClear() {
 
 bool RegisterScreenRow(int screen_index, const char* label,
                        mazarbulib_type_t type, const void* value_ptr) {
-  return mazarbulib_register_row(&g_lib, screen_index, label, type, value_ptr) ==
-         MAZARBULIB_OK;
+  return mazarbulib_register_row(&g_lib, screen_index, label, type,
+                                 value_ptr) == MAZARBULIB_OK;
 }
 
 bool InitializeScreens() {
