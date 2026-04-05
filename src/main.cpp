@@ -39,7 +39,7 @@ bool HasIntervalElapsed(uint32_t now, uint32_t last_time_ms,
                         uint32_t interval_ms) {
   // Unsigned subtraction keeps elapsed-time checks correct across millis()
   // wrap-around on ESP32.
-  return static_cast<uint32_t>(now - last_time_ms) >= interval_ms;
+  return now - last_time_ms >= interval_ms;
 }
 
 void UartSend(const char* data, size_t len) {
