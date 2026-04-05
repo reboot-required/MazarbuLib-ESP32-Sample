@@ -46,7 +46,7 @@ void UartSend(const char* data, size_t len) {
   if (data == nullptr || len == 0U) {
     return;
   }
-  Serial.write(reinterpret_cast<const uint8_t *>(data), len);
+  Serial.write(reinterpret_cast<const uint8_t*>(data), len);
 }
 
 void TerminalClear() {
