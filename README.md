@@ -20,7 +20,7 @@ them by typing `n` (next) or `p` (previous) in the monitor.
 ## Prerequisites
 
 - [PlatformIO](https://platformio.org/) CLI or IDE extension
-- Git (to initialise the submodule)
+- Git (to initialise the submodule over HTTPS)
 
 ## Getting Started
 
@@ -57,7 +57,9 @@ MazarbuLib-ESP32-Sample/
 ```
 
 PlatformIO auto-discovers `lib/mazarbulib/` via its `library.json`; no
-`lib_deps` entry is required in `platformio.ini`.
+`lib_deps` entry is required in `platformio.ini`. The repository is configured
+to fetch the submodule over HTTPS so it works in environments without GitHub
+SSH access.
 
 ## Serial Navigation
 
