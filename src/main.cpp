@@ -9,7 +9,7 @@
 #include <Arduino.h>
 #include <esp_system.h>
 
-#include "mazarbulib.h"  // NOLINT(build/include_subdir)
+#include "mazarbulib.h" // NOLINT(build/include_subdir)
 
 namespace {
 
@@ -42,25 +42,23 @@ bool HasIntervalElapsed(uint32_t now, uint32_t last_time_ms,
   return now - last_time_ms >= interval_ms;
 }
 
-void UartSend(const char* data, size_t len) {
+void UartSend(const char *data, size_t len) {
   if (data == nullptr || len == 0U) {
     return;
   }
-  Serial.write(reinterpret_cast<const uint8_t*>(data), len);
+  Serial.write(reinterpret_cast<const uint8_t *>(data), len);
 }
 
-void TerminalClear() {
-  Serial.print("\033[2J\033[H");
-}
+void TerminalClear() { Serial.print("\033[2J\033[H"); }
 
-bool RegisterScreenRow(int screen_index, const char* label,
-                       mazarbulib_type_t type, const void* value_ptr) {
+bool RegisterScreenRow(int screen_index, const char *label,
+                       mazarbulib_type_t type, const void *value_ptr) {
   return mazarbulib_register_row(&g_lib, screen_index, label, type,
-                                 value_ptr) == MAZARBULIB_OK;
+                                 value_ptr) == MAZARBULIB_ERR_OK;
 }
 
 bool InitializeScreens() {
-  if (mazarbulib_init(&g_lib, UartSend, TerminalClear) != MAZARBULIB_OK) {
+  if (mazarbulib_init(&g_lib, UartSend, TerminalClear) != MAZARBULIB_ERR_OK) {
     return false;
   }
 
@@ -87,7 +85,7 @@ bool InitializeScreens() {
                            &g_app_state.gpio5);
 }
 
-void HaltWithError(const char* error_message) {
+void HaltWithError(const char *error_message) {
   Serial.println(error_message);
   while (true) {
     delay(kErrorLoopDelayMs);
@@ -122,7 +120,7 @@ void TickScreenIfDue() {
   mazarbulib_tick(&g_lib);
 }
 
-}  // namespace
+} // namespace
 
 void setup() {
   Serial.begin(kSerialBaudRate);

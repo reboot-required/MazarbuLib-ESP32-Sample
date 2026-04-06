@@ -45,9 +45,9 @@ static uint32_t g_psram_kb = 0;
 static uint32_t g_free_psram_kb = 0;
 static uint32_t g_sketch_kb = 0;
 static uint32_t g_free_sketch_kb = 0;
-// IDF version: esp_get_idf_version() returns a pointer to a static string;
-// the pointer itself is stored as value_ptr and dereferenced at render time.
 static char g_reset_reason[24] = {};
+static const char *g_idf_version = nullptr; // set in setup()
+static const char *g_reset_reason_ptr = g_reset_reason;
 static uint32_t g_rtos_tasks = 0;
 
 // ---------------------------------------------------------------------------
@@ -60,12 +60,15 @@ static char g_net_ssid[kWifiMaxNets][33] = {};
 static int32_t g_net_rssi[kWifiMaxNets] = {};
 static int32_t g_net_chan[kWifiMaxNets] = {};
 static char g_net_sec[kWifiMaxNets][14] = {};
+static const char *g_net_ssid_ptr[kWifiMaxNets]; // set in setup()
+static const char *g_net_sec_ptr[kWifiMaxNets];  // set in setup()
 
 // ---------------------------------------------------------------------------
 // Screen 3 — WiFi Scanner status (4 rows)
 // ---------------------------------------------------------------------------
 
 static char g_scan_status[20] = "initialising";
+static const char *g_scan_status_ptr = g_scan_status;
 static int32_t g_net_count = 0;
 static uint32_t g_scan_count = 0;
 static uint32_t g_last_scan_s = 0;
@@ -165,6 +168,12 @@ void setup() {
           sizeof(g_reset_reason));
   clear_net_slots();
 
+  g_idf_version = esp_get_idf_version();
+  for (int i = 0; i < kWifiMaxNets; ++i) {
+    g_net_ssid_ptr[i] = g_net_ssid[i];
+    g_net_sec_ptr[i] = g_net_sec[i];
+  }
+
   // Row labels for WiFi screens — static local guarantees program lifetime.
   static char net_labels[kWifiMaxNets][4][21];
   for (int i = 0; i < kWifiMaxNets; ++i) {
@@ -201,9 +210,9 @@ void setup() {
   mazarbulib_register_row(&g_lib, s0, "Free Sketch (KB)",
                           MAZARBULIB_TYPE_UINT32, &g_free_sketch_kb);
   mazarbulib_register_row(&g_lib, s0, "IDF Version", MAZARBULIB_TYPE_STRING,
-                          esp_get_idf_version());
+                          &g_idf_version);
   mazarbulib_register_row(&g_lib, s0, "Reset Reason", MAZARBULIB_TYPE_STRING,
-                          g_reset_reason);
+                          &g_reset_reason_ptr);
   mazarbulib_register_row(&g_lib, s0, "FreeRTOS Tasks", MAZARBULIB_TYPE_UINT32,
                           &g_rtos_tasks);
 
@@ -214,20 +223,20 @@ void setup() {
     for (int n = 0; n < 4; ++n) {
       int i = s * 4 + n;
       mazarbulib_register_row(&g_lib, sid, net_labels[i][0],
-                              MAZARBULIB_TYPE_STRING, g_net_ssid[i]);
+                              MAZARBULIB_TYPE_STRING, &g_net_ssid_ptr[i]);
       mazarbulib_register_row(&g_lib, sid, net_labels[i][1],
                               MAZARBULIB_TYPE_INT32, &g_net_rssi[i]);
       mazarbulib_register_row(&g_lib, sid, net_labels[i][2],
                               MAZARBULIB_TYPE_INT32, &g_net_chan[i]);
       mazarbulib_register_row(&g_lib, sid, net_labels[i][3],
-                              MAZARBULIB_TYPE_STRING, g_net_sec[i]);
+                              MAZARBULIB_TYPE_STRING, &g_net_sec_ptr[i]);
     }
   }
 
   // Screen 3 — WiFi Scanner status (4 rows).
   int s3 = mazarbulib_register_screen(&g_lib, "WiFi Scanner");
   mazarbulib_register_row(&g_lib, s3, "Status", MAZARBULIB_TYPE_STRING,
-                          g_scan_status);
+                          &g_scan_status_ptr);
   mazarbulib_register_row(&g_lib, s3, "Networks Found", MAZARBULIB_TYPE_INT32,
                           &g_net_count);
   mazarbulib_register_row(&g_lib, s3, "Scans Done", MAZARBULIB_TYPE_UINT32,
