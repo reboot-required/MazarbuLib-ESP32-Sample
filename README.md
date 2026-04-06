@@ -46,12 +46,12 @@ Network slots show `---` until the first scan completes. Scans repeat every
 ## Getting Started
 
 ```bash
-# Clone
-git clone https://github.com/reboot-required/MazarbuLib-ESP32-Sample
+# Clone (with submodules)
+git clone --recurse-submodules https://github.com/reboot-required/MazarbuLib-ESP32-Sample
 cd MazarbuLib-ESP32-Sample
 
-# Initialize submodules (fetches MazarbuLib into extern/mazarbulib)
-git submodule update --init --recursive
+# Or if already cloned without submodules:
+# git submodule update --init --recursive
 
 # Build simple example
 pio run -e simple
@@ -71,7 +71,7 @@ pio run -e advanced --target upload && pio device monitor
 ``` "C"
 MazarbuLib-ESP32-Sample/
 ├── extern/
-│   └── mazarbulib/           # MazarbuLib git submodule (branch v0.1.1)
+│   └── mazarbulib/           # MazarbuLib git submodule (v0.1.2)
 ├── src/
 │   ├── main.cpp              # simple environment
 │   └── main_advanced.cpp     # advanced environment
