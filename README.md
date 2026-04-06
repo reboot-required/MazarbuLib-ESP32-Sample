@@ -12,10 +12,10 @@ in the serial monitor.
 
 A minimal starting point: three screens, each row a different value type.
 
-| Screen | Rows |
-|--------|------|
+| Screen          | Rows                                     |
+|-----------------|------------------------------------------|
 | **System Info** | Uptime (s), Free Heap (B), Chip Temp (C) |
-| **GPIO Status** | GPIO2 (LED), GPIO4, GPIO5 |
+| **GPIO Status** | GPIO2 (LED), GPIO4, GPIO5                |
 
 Requires GPIO2, GPIO4, GPIO5 wired as digital inputs.
 
@@ -24,12 +24,12 @@ Requires GPIO2, GPIO4, GPIO5 wired as digital inputs.
 Four screens packed with live peripheral data, demonstrating large tables,
 all supported value types, and asynchronous WiFi scanning.
 
-| Screen | Rows | Description |
-|--------|------|-------------|
-| **System Info** | 14 | Heap stats, chip temp, CPU freq, flash/PSRAM sizes, IDF version, reset reason, FreeRTOS task count |
-| **WiFi Networks 1–4** | 16 | SSID, RSSI (dBm), channel, security type for the top 4 scanned APs |
-| **WiFi Networks 5–8** | 16 | Same for APs 5–8 |
-| **WiFi Scanner** | 4 | Scan status, network count, scan iterations, timestamp of last scan |
+| Screen                | Rows | Description                                                                                        |
+|-----------------------|------|----------------------------------------------------------------------------------------------------|
+| **System Info**       | 14   | Heap stats, chip temp, CPU freq, flash/PSRAM sizes, IDF version, reset reason, FreeRTOS task count |
+| **WiFi Networks 1–4** | 16   | SSID, RSSI (dBm), channel, security type for the top 4 scanned APs                                 |
+| **WiFi Networks 5–8** | 16   | Same for APs 5–8                                                                                   |
+| **WiFi Scanner**      | 4    | Scan status, network count, scan iterations, timestamp of last scan                                |
 
 Network slots show `---` until the first scan completes. Scans repeat every
 15 s automatically (5 s retry on failure). No `delay()` in the main loop.
@@ -68,7 +68,7 @@ pio run -e advanced --target upload && pio device monitor
 
 ## Project Structure
 
-```
+``` "C"
 MazarbuLib-ESP32-Sample/
 ├── extern/
 │   └── mazarbulib/           # MazarbuLib git submodule (branch v0.1.1)
@@ -85,9 +85,9 @@ referenced locally in `platformio.ini` via `lib_deps`.
 
 With the serial monitor open at **115200 baud**:
 
-| Key | Action |
-|-----|--------|
-| `n` | Next screen |
+| Key | Action          |
+|-----|-----------------|
+| `n` | Next screen     |
 | `p` | Previous screen |
 
 ## License
