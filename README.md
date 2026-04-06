@@ -50,6 +50,9 @@ Network slots show `---` until the first scan completes. Scans repeat every
 git clone https://github.com/reboot-required/MazarbuLib-ESP32-Sample
 cd MazarbuLib-ESP32-Sample
 
+# Initialize submodules
+git submodule update --init
+
 # Build simple example
 pio run -e simple
 
