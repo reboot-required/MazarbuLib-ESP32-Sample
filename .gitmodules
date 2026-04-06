@@ -1,4 +1,4 @@
 [submodule "extern/mazarbulib"]
 	path = extern/mazarbulib
 	url = https://github.com/reboot-required/MazarbuLib
-	branch = v0.1.1
+	branch = v0.1.2
