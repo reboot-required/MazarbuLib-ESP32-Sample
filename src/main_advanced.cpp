@@ -31,7 +31,7 @@ static constexpr uint32_t kTickIntervalMs = 1000UL;
 static mazarbulib_t g_lib;
 
 // ---------------------------------------------------------------------------
-// Screen 0 — System Info (14 rows)
+// Screen 0 — System Info (15 rows)
 // ---------------------------------------------------------------------------
 
 static uint32_t g_uptime_s = 0;
@@ -177,7 +177,7 @@ void setup() {
 
   mazarbulib_init(&g_lib, uart_send, terminal_clear);
 
-  // Screen 0 — System Info (14 rows).
+  // Screen 0 — System Info (15 rows).
   int s0 = mazarbulib_register_screen(&g_lib, "System Info");
   mazarbulib_register_row(&g_lib, s0, "Uptime (s)", MAZARBULIB_TYPE_UINT32,
                           &g_uptime_s);
@@ -203,6 +203,8 @@ void setup() {
                           MAZARBULIB_TYPE_UINT32, &g_free_sketch_kb);
   mazarbulib_register_row(&g_lib, s0, "IDF Version", MAZARBULIB_TYPE_STRING,
                           g_idf_version);
+  mazarbulib_register_row(&g_lib, s0, "Lib Version", MAZARBULIB_TYPE_STRING,
+                          MAZARBULIB_VERSION_STRING);
   mazarbulib_register_row(&g_lib, s0, "Reset Reason", MAZARBULIB_TYPE_STRING,
                           g_reset_reason);
   mazarbulib_register_row(&g_lib, s0, "FreeRTOS Tasks", MAZARBULIB_TYPE_UINT32,

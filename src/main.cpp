@@ -70,7 +70,9 @@ bool InitializeScreens() {
       !RegisterScreenRow(system_info_screen, "Free Heap (B)",
                          MAZARBULIB_TYPE_UINT32, &g_app_state.free_heap) ||
       !RegisterScreenRow(system_info_screen, "Chip Temp (C)",
-                         MAZARBULIB_TYPE_FLOAT, &g_app_state.chip_temp_c)) {
+                         MAZARBULIB_TYPE_FLOAT, &g_app_state.chip_temp_c) ||
+      !RegisterScreenRow(system_info_screen, "Lib Version",
+                         MAZARBULIB_TYPE_STRING, MAZARBULIB_VERSION_STRING)) {
     return false;
   }
 
